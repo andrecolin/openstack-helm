@@ -192,5 +192,3 @@ spec:
         requests:
           storage: {{ .Values.volume.size }}
 {{- end }}
-            
-

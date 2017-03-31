@@ -81,7 +81,7 @@ if [ "$REPLICAS" -eq 1 ] ; then
     exit 0
 elif [ "$REPLICAS" -eq 2 ] ; then
     echo "2-instance cluster is not a valid MariaDB configuration."
-    #exit 1
+    exit 1
 fi
 
 . /tmp/bootstrap-db.sh

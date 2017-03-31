@@ -52,13 +52,13 @@ resources:
 service_name: mariadb
 
 images:
-  mariadb: kolla/ubuntu-binary-mariadb:3.0.2
+  mariadb: quay.io/stackanetes/stackanetes-mariadb:newton
   pull_policy: IfNotPresent
 
 volume:
   class_path: volume.beta.kubernetes.io/storage-class
   class_name: general
-  size: 10Gi
+  size: 20Gi
 
 labels:
   node_selector_key: openstack-control-plane

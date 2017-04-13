@@ -21,7 +21,7 @@ sudo chown postgresql: /var/lib/postgresql/9.6/main
 {{- if .Values.development.enabled }}
 SUBSCRIBERS=0
 {{- else }}
-SUBSCRIBERS={{ .Values.replicas }}
+SUBSCRIBERS={{ .Values.subscribers }}
 {{- end }}
 PETSET_NAME={{ printf "%s" .Values.service_name }}
 INIT_MARKER="/var/lib/postgresql/9.6/main/init_down"

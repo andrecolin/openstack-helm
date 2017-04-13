@@ -14,3 +14,5 @@
 # limitations under the License.
 
 set -ex
+
+return 0

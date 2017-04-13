@@ -15,7 +15,7 @@
 # subscribers will sync from a provider
 # subscribers of 0 means that there is still 1 master provider
 # recommend [0 to 3] subscribers, where 0 for single node development
-subscribers: 2
+replicas: 3
 
 # this flag allows a "leaner" version of this chart to be installed
 # likely lacking any resiliency or persistence, but will help

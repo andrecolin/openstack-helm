@@ -19,9 +19,9 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 sudo chown postgresql: /var/lib/postgresql/9.6/main
 
 {{- if .Values.development.enabled }}
-SUBSCRIBERS=0
+REPLICAS=0
 {{- else }}
-SUBSCRIBERS={{ .Values.subscribers }}
+REPLICAS={{ .Values.replicas }}
 {{- end }}
 PETSET_NAME={{ printf "%s" .Values.service_name }}
 INIT_MARKER="/var/lib/postgresql/9.6/main/init_down"
@@ -35,7 +35,7 @@ if [[ -f /var/lib/postgresql/9.6/main/postmaster.pid ]]; then
     fi
 fi
 
-if [ "$SUBSCRIBERS" -eq 1 ] ; then
+if [ "$REPLICAS" -eq 1 ] ; then
     if [[ ! -f ${INIT_MARKER} ]]; then
         cd /var/lib/postgresql/9.6/main
         echo "Creating main provider."

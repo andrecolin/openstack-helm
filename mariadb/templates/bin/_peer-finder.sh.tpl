@@ -43,7 +43,6 @@ while true; do
 
   # get service endpoint
   URL="https://kubernetes.default.svc.cluster.local/api/v1/namespaces/$NAMESPACE/endpoints/$SERVICE_NAME"
- # echo $URL
 
   # read token file
   TOKEN=$(<$TOKEN_FILE)
@@ -51,17 +50,22 @@ while true; do
   STATUS=$?
   if [ $STATUS -ne 0 ]; then
     echo 'Unable to open a file with token.'
-    # not sure if service should be up or keep retrying
-      #exit 1
   fi
 
 
   # get json output string
   DATA=`curl --silent -k -H "Authorization: Bearer $TOKEN" $URL`
 
-  startSearching=false # ignore lines in json output until "subsets" found. start searching
-  hasAddresses=false # if found subsets, make sure there is 'addresses' section
-  seedFound=false # found seed job, get last IP as IP comes before name with seed in it
+  # ignore lines in json output until "subsets" found. start searching
+  startSearching=false 
+
+  # if found subsets, make sure there is 'addresses' section
+  hasAddresses=false 
+
+  # found seed job, get last IP as IP comes before name with seed in it
+  seedFound=false 
+
+  # initanilize variables
   lastIP=""
   ips=()
   names=()

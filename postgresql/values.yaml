@@ -12,26 +12,53 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Default values for postgresql.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+# subscribers will sync from a provider
+# subscribers of 0 means that there is still 1 master provider
+# recommend [0 to 3] subscribers, where 0 for single node development
+subscribers: 2
 
+# this flag allows a "leaner" version of this chart to be installed
+# likely lacking any resiliency or persistence, but will help
+# both laptop developers and cicd systems
+#
+# it will deploy a single instance of mariadb, use nodeDir
+# for persistence and satisfy the mariadb-seed job with
+# a busybox mock
+#
+# note enabling this flag takes precedence when enabled and
+# will override certain things, like the replicas requested
 development:
-  enabled: true
+  enabled: false
   storage_path: /data/openstack-helm/postgresql
 
-replicas: 1 #only 1 replica currently supported
+resources:
+  enabled: false
+  api:
+    limits:
+      memory: "128Mi"
+      cpu: "500m"
+    requests:
+      memory: "128Mi"
+      cpu: "500m"
+  job:
+    seed:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+      requests:
+        memory: "128Mi"
+        cpu: "500m"
 
+# this drives the service name, and statefulset name
 service_name: postgresql
 
-# using dockerhub postgresql: https://hub.docker.com/r/library/postgres/tags/
 images:
-  postgresql: "docker.io/postgres:9.5"
+  postgresql: postgresql:9.6.01
   pull_policy: IfNotPresent
 
 volume:
   class_path: volume.beta.kubernetes.io/storage-class
-  class_name: general
+  class_name: default
   size: 20Gi
 
 labels:
@@ -41,3 +68,10 @@ labels:
 network:
   port:
     postgresql: 5432
+  dns:
+    kubernetes_domain: cluster.local
+
+database:
+  root_password: password
+  replication_set_name: openstack
+  node_name: master

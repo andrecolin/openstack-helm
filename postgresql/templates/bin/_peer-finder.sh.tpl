@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2017 The Openstack-Helm Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-description: A helm chart for postgresql
-name: postgresql
-version: 0.1.0
+set -ex
+#trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
+#sudo chown mysql: /var/lib/postgresql
+

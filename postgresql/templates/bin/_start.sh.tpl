@@ -16,15 +16,16 @@
 set -ex
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
-sudo chown postgresql: /var/lib/postgresql/9.6/main
+sudo chown mysql: /var/lib/postgresql
+rm -rf /var/lib/postgresql/lost+found
 
 {{- if .Values.development.enabled }}
-REPLICAS=0
+REPLICAS=1
 {{- else }}
 REPLICAS={{ .Values.replicas }}
 {{- end }}
 PETSET_NAME={{ printf "%s" .Values.service_name }}
-INIT_MARKER="/var/lib/postgresql/9.6/main/init_down"
+INIT_MARKER="/var/lib/mysql/init_done"
 
 function join_by { local IFS="$1"; shift; echo "$*"; }
 

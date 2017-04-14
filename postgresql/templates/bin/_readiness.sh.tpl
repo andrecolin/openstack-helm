@@ -15,4 +15,5 @@
 
 #set -ex
 
-return 0
+
+echo "hello"

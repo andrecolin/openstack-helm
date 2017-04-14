@@ -18,4 +18,5 @@ set -ex
 
 #sudo chown mysql: /var/lib/postgresql
 
-return 0
+
+echo "hello"

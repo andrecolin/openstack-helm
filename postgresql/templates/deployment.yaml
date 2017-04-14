@@ -20,9 +20,9 @@ metadata:
 spec:
   serviceName: "{{ .Values.service_name }}"
 {{- if .Values.development.enabled }}
-  REPLICAS: 1
+  replicas: 1
 {{- else }}
-  REPLICAS: {{ .Values.replicas }}
+  replicas: {{ .Values.replicas }}
 {{- end }}
   template:
     metadata:

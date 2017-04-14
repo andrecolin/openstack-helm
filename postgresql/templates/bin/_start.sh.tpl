@@ -16,4 +16,4 @@
 set -ex
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
-
+return 0

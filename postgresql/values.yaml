@@ -53,7 +53,7 @@ resources:
 service_name: postgresql
 
 images:
-  postgresql: kvmit/postgresql
+  postgresql: kvmit/postgresql:9.6.02
   pull_policy: IfNotPresent
 
 volume:

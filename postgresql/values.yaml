@@ -28,7 +28,7 @@ replicas: 1
 # will override certain things, like the replicas requested
 development:
   enabled: true
-  storage_path: /data/openstack-helm/postgresql
+  storage_path: /var/lib/postgresql
 
 resources:
   enabled: false
@@ -67,11 +67,10 @@ labels:
 network:
   port:
     postgresql: 5432
-    ist: 4444
   dns:
     kubernetes_domain: cluster.local
 
 database:
   root_password: password
   cluster_name: postgresql
-  node_name: master
+  node_name: master1

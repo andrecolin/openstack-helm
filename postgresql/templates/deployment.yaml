@@ -28,7 +28,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.service_name }}
-        galera: enabled
+        postgres: enabled
       annotations:
         # alanmeadows: this soft requirement allows single
         # host deployments to spawn several mariadb containers
@@ -100,9 +100,6 @@ spec:
             - name: startsh
               mountPath: /tmp/start.sh
               subPath: start.sh
-            - name: peerfinder
-              mountPath: /tmp/peer-finder.sh
-              subPath: peer-finder.sh
             - name: readiness
               mountPath: /tmp/readiness.sh
               subPath: readiness.sh

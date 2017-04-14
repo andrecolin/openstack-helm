@@ -42,7 +42,7 @@ spec:
                   "matchExpressions": [{
                     "key": "app",
                     "operator": "In",
-                    "values":["pglogical"]
+                    "values":["postgresql"]
                   }]
                 },
               "topologyKey": "kubernetes.io/hostname",

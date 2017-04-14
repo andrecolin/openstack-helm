@@ -18,7 +18,7 @@ metadata:
   name: {{ .Values.service_name }}
   annotations:
     # This is needed to make the peer-finder work properly and to help avoid
-    service.alpha.kubernetes.io/tolerate-unready-endpoints: "false"
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
   ports:
     - name: db

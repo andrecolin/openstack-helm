@@ -5,4 +5,4 @@
 # See pg_createcluster(1) for details. When running from systemd,
 # invoke 'systemctl daemon-reload' after editing this file.
 
-manual
+auto

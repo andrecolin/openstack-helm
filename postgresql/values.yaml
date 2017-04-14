@@ -67,6 +67,7 @@ labels:
 network:
   port:
     postgresql: 5432
+    ist: 4444
   dns:
     kubernetes_domain: cluster.local
 

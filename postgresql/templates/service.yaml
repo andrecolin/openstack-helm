@@ -27,6 +27,6 @@ metadata:
 spec:
   ports:
     - name: db
-      port: {{ .Values.network.port.mariadb }}
+      port: {{ .Values.network.port.postgresql }}
   selector:
     app: {{ .Values.service_name }}

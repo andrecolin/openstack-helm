@@ -14,7 +14,7 @@
 
 # note that you need to update the gcomm member list
 # below when changing this value
-replicas: 3
+replicas: 1
 
 # this flag allows a "leaner" version of this chart to be installed
 # likely lacking any resiliency or persistence, but will help

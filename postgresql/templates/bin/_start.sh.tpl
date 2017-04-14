@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#set -ex
+set -ex
 #trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
-echo "hello"
+exec "/usr/lib/postgresql/9.6/bin/postgres -D /var/lib/postgresql/9.6/main -c config_file=/etc/postgresql/9.6/main/postgresql.conf"

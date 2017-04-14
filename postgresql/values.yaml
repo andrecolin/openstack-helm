@@ -71,7 +71,3 @@ network:
   dns:
     kubernetes_domain: cluster.local
 
-database:
-  root_password: password
-  replication_set_name: openstack
-  node_name: master

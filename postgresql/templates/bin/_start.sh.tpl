@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -ex
-trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+#set -ex
+#trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 return 0

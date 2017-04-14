@@ -96,6 +96,8 @@ spec:
                 - /tmp/readiness.sh
             initialDelaySeconds: 60
           volumeMounts:
+            - name: mycnfd
+              mountPath: /etc/postgresql/9.6/main/
             - name: peerfinder
               mountPath: /tmp/peer-finder.sh
               subPath: peer-finder.sh
@@ -132,6 +134,8 @@ spec:
             - name: postgresql-data
               mountPath: /var/lib/postgresql
       volumes:
+        - name: mycnfd
+          emptyDir: {}
         - name: startsh
           configMap:
             name: postgresql-bin

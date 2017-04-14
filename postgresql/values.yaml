@@ -52,7 +52,7 @@ resources:
 service_name: postgresql
 
 images:
-  mariadb: kvmit/postgresql:9.6.03
+  mariadb: kvmit/postgresql:9.6.04
   pull_policy: IfNotPresent
 
 volume:

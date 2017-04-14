@@ -16,4 +16,10 @@
 set -ex
 #trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
+IP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
+
+echo "listen_addresses=${IP}" >> /etc/postgresql/9.6/main/postgresql.conf
+
+echo 'host     all               all             0.0.0.0/0               md5' >> /etc/postgresql/9.6/main/pg_hba.conf
+
 exec "/usr/lib/postgresql/9.6/bin/postgres -D /var/lib/postgresql/9.6/main -c config_file=/etc/postgresql/9.6/main/postgresql.conf"

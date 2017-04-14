@@ -28,7 +28,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.service_name }}
-        pglogical: enabled
+        galera: enabled
       annotations:
         # alanmeadows: this soft requirement allows single
         # host deployments to spawn several mariadb containers
@@ -89,86 +89,35 @@ spec:
           # a readinessprobe is a much more complex affair with
           # statefulsets, as the container must be "live"
           # before the next stateful member is created
+          # and with galera this is problematic
           readinessProbe:
             exec:
               command:
                 - bash
                 - /tmp/readiness.sh
-            initialDelaySeconds: 60
+            initialDelaySeconds: 20
           volumeMounts:
-            - name: mycnfd
-              mountPath: /etc/postgresql/9.6/main/
+            - name: startsh
+              mountPath: /tmp/start.sh
+              subPath: start.sh
             - name: peerfinder
               mountPath: /tmp/peer-finder.sh
               subPath: peer-finder.sh
             - name: readiness
               mountPath: /tmp/readiness.sh
               subPath: readiness.sh
-            - name: startsh
-              mountPath: /tmp/start.sh
-              subPath: start.sh
-            - name: environment
-              mountPath: /etc/postgresql/9.6/main/environment
-              subPath: environment
-            - name: pgctl
-              mountPath: /etc/postgresql/9.6/main/pg_ctl.conf
-              subPath: pg_ctl.conf
-            - name: pghba
-              mountPath: /etc/postgresql/9.6/main/pg_hba.conf
-              subPath: pg_hba.conf
-            - name: pgident
-              mountPath: /etc/postgresql/9.6/main/pg_ident.conf
-              subPath: pg_ident.conf
-            - name: postgresql
-              mountPath: /etc/postgresql/9.6/main/postgresql.conf
-              subPath: postgresql.conf
-            - name: pgpsql
-              mountPath: /tmp/pg.psql
-              subPath: pg.psql
-            - name: specialsh
-              mountPath: /etc/postgresql/9.6/main/special.conf
-              subPath: special.conf
-            - name: start
-              mountPath: /etc/postgresql/9.6/main/start.conf
-              subPath: start.conf
-            - name: postgresql-data
-              mountPath: /var/lib/postgresql
       volumes:
         - name: mycnfd
           emptyDir: {}
         - name: startsh
           configMap:
-            name: postgresql-bin
+            name: mariadb-bin
         - name: peerfinder
           configMap:
-            name: postgresql-bin   
+            name: mariadb-bin
         - name: readiness
           configMap:
-            name: postgresql-bin 
-        - name: environment
-          configMap:
-            name: postgresql-etc
-        - name: pgctl
-          configMap:
-            name: postgresql-etc
-        - name: pghba
-          configMap:
-            name: postgresql-etc
-        - name: pgident
-          configMap:
-            name: postgresql-etc
-        - name: postgresql
-          configMap:
-            name: postgresql-etc
-        - name: pgpsql
-          configMap:
-            name: postgresql-etc            
-        - name: specialsh
-          configMap:
-            name: postgresql-etc           
-        - name: start
-          configMap:
-            name: postgresql-etc
+            name: mariadb-bin
 {{- if .Values.development.enabled }}
         - name: postgresql-data
           hostPath:

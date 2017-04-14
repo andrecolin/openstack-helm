@@ -13,7 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -ex
+#set -ex
 
 
 echo "hello"
+STATUS=$?
+
+if [ $STATUS -eq 0 ]; then
+
+  # mysql is fine and return success
+  /bin/echo "Service OK"
+  exit 0
+else
+  # mysql service is unavailable and keep looping
+  /bin/echo "Service Unavailable"
+fi

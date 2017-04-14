@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# subscribers will sync from a provider
-# subscribers of 0 means that there is still 1 master provider
-# recommend [0 to 3] subscribers, where 0 for single node development
+# note that you need to update the gcomm member list
+# below when changing this value
 replicas: 3
 
 # this flag allows a "leaner" version of this chart to be installed
@@ -53,12 +52,12 @@ resources:
 service_name: postgresql
 
 images:
-  postgresql: kvmit/postgresql:9.6.04
+  mariadb: kvmit/postgresql:9.6.03
   pull_policy: IfNotPresent
 
 volume:
   class_path: volume.beta.kubernetes.io/storage-class
-  class_name: default
+  class_name: general
   size: 20Gi
 
 labels:
@@ -67,7 +66,11 @@ labels:
 
 network:
   port:
-    postgresql: 5432
+    postgresql: 3306
   dns:
     kubernetes_domain: cluster.local
 
+database:
+  root_password: password
+  cluster_name: postgresql
+  node_name: master

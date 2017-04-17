@@ -27,8 +27,8 @@ replicas: 1
 # note enabling this flag takes precedence when enabled and
 # will override certain things, like the replicas requested
 development:
-  enabled: true
-  storage_path: /var/lib/postgresql
+  enabled: false
+  storage_path: /data/openstack-helm/postgresql
 
 resources:
   enabled: false
@@ -52,7 +52,7 @@ resources:
 service_name: postgresql
 
 images:
-  mariadb: kvmit/postgresql:9.6.04
+  postgresql: kvmit/postgresql:9.6.05
   pull_policy: IfNotPresent
 
 volume:
@@ -73,4 +73,4 @@ network:
 database:
   root_password: password
   cluster_name: postgresql
-  node_name: master1
+  node_name: master

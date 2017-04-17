@@ -15,16 +15,27 @@
 
 set -ex
 
+SLEEP_TIMEOUT=3
 
-echo "hello"
-STATUS=$?
+# loop forever
+while true; do
 
-if [ $STATUS -eq 0 ]; then
+  #mysql --host=localhost --port="{{ .Values.network.port.mariadb }}" --user=root --password="{{ .Values.database.root_password }}" -e 'show databases;'  > /dev/null  2> /dev/null
 
-  # mysql is fine and return success
-  /bin/echo "Service OK"
-  exit 0
-else
-  # mysql service is unavailable and keep looping
-  /bin/echo "Service Unavailable"
-fi
+  /bin/psql -h localhost --username=postgres --list
+
+  STATUS=$?
+  if [ $STATUS -eq 0 ]; then
+
+    # mysql is fine and return success
+    /bin/echo "Service OK"
+    exit 0
+  else
+    # mysql service is unavailable and keep looping
+    /bin/echo "Service Unavailable"
+  fi
+
+  # check x amount of seconds
+  sleep $SLEEP_TIMEOUT
+
+done

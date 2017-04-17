@@ -1,6 +1,6 @@
 # aic-helm/postgresql
 
-By default, this chart creates 1-member master provider and 2 slaves subscribers.
+By default, this chart creates a 3-member mariadb galera cluster.
 
 This chart leverages StatefulSets, with persistent storage.
 

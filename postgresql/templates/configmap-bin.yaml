@@ -15,11 +15,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mariadb-bin
+  name: postgresql-bin
 data:
   start.sh: |
 {{ tuple "bin/_start.sh.tpl" . | include "helm-toolkit.template" | indent 4 }}
+  peer-finder.sh: |
+{{ tuple "bin/_peer-finder.sh.tpl" . | include "helm-toolkit.template" | indent 4 }}
   readiness.sh: |
 {{ tuple "bin/_readiness.sh.tpl" . | include "helm-toolkit.template" | indent 4 }}
-
 

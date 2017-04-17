@@ -14,12 +14,49 @@
 # limitations under the License.
 
 set -ex
-#trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
-IP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
+chown -R postgres: /var/lib/postgresql
+rm -rf /var/lib/postgresql/lost+found
 
-echo "listen_addresses=${IP}" >> /etc/postgresql/9.6/main/postgresql.conf
+{{- if .Values.development.enabled }}
+REPLICAS=1
+{{- else }}
+REPLICAS={{ .Values.replicas }}
+{{- end }}
+PETSET_NAME={{ printf "%s" .Values.service_name }}
+INIT_MARKER="/var/lib/postgresql/init_done"
 
-echo 'host     all               all             0.0.0.0/0               md5' >> /etc/postgresql/9.6/main/pg_hba.conf
+function join_by { local IFS="$1"; shift; echo "$*"; }
 
-exec "/usr/lib/postgresql/9.6/bin/postgres -D /var/lib/postgresql/9.6/main -c config_file=/etc/postgresql/9.6/main/postgresql.conf"
+# Remove mariadb.pid if exists
+if [[ -f /var/run/postgresql/9.6-main.pid ]]; then
+    if [[ `pgrep -c $(cat /var/run/postgresql/9.6-main.pid)` -eq 0 ]]; then
+        rm -vf /var/run/postgresql/9.6-main.pid
+    fi
+fi
+
+if [ "$REPLICAS" -eq 1 ] ; then
+    if [[ ! -f ${INIT_MARKER} ]]; then
+        cd /var/lib/postgresql
+        echo "Creating one-instance Postgresql."
+        #bash /tmp/bootstrap-db.sh
+        touch ${INIT_MARKER}
+    fi
+    exec /usr/lib/postgresql/9.6/bin/postgres \
+        -D /var/lib/postgresql/9.6/main \
+        -c config_file=/etc/postgresql/9.6/main/postgresql.conf
+else
+
+    # give the seed more of a chance to be ready by the time
+    # we start the first pet so we succeed on the first pass
+    # a little hacky, but prevents restarts as we aren't waiting
+    # for job completion here so I'm not sure what else
+    # to look for
+    sleep 30
+
+    export PEERS_FOUND=`bash /tmp/peer-finder.sh postgresql 0`
+    exec /usr/lib/postgresql/9.6/bin/postgres \
+        -D /var/lib/postgresql/9.6/main \
+        -c config_file=/etc/postgresql/9.6/main/postgresql.conf
+fi

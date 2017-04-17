@@ -28,7 +28,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.service_name }}
-        postgres: enabled
+        pglogical: enabled
       annotations:
         # alanmeadows: this soft requirement allows single
         # host deployments to spawn several mariadb containers
@@ -95,11 +95,16 @@ spec:
               command:
                 - bash
                 - /tmp/readiness.sh
-            initialDelaySeconds: 20
+            initialDelaySeconds: 60
           volumeMounts:
+            - name: mycnfd
+              mountPath: /etc/postgresql/9.6/main
             - name: startsh
               mountPath: /tmp/start.sh
               subPath: start.sh
+            - name: peerfinder
+              mountPath: /tmp/peer-finder.sh
+              subPath: peer-finder.sh
             - name: readiness
               mountPath: /tmp/readiness.sh
               subPath: readiness.sh
@@ -108,13 +113,13 @@ spec:
           emptyDir: {}
         - name: startsh
           configMap:
-            name: mariadb-bin
+            name: postgresql-bin
         - name: peerfinder
           configMap:
-            name: mariadb-bin
+            name: postgresql-bin
         - name: readiness
           configMap:
-            name: mariadb-bin
+            name: postgresql-bin
 {{- if .Values.development.enabled }}
         - name: postgresql-data
           hostPath:
